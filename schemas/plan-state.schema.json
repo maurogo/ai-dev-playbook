@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/<you>/ai-dev-playbook/schemas/plan-state.schema.json",
+  "title": "Plan state",
+  "description": "Execution state for a plan. The companion *-plan.md explains why; this file tracks where we are.",
+  "type": "object",
+  "required": ["planId", "title", "lifecycle", "createdDate", "lastUpdated", "workItems", "changelog"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "planId": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+    "title": { "type": "string" },
+    "issue": { "type": "string", "description": "Issue or ticket reference, e.g. #123" },
+    "lifecycle": { "enum": ["single-pr", "multi-session"] },
+    "status": { "$ref": "#/$defs/status" },
+    "createdDate": { "$ref": "#/$defs/date" },
+    "lastUpdated": { "$ref": "#/$defs/date" },
+    "relatedDocs": { "type": "array", "items": { "type": "string" } },
+    "repositories": { "type": "array", "items": { "type": "string" } },
+    "pullRequests": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["url", "state"],
+        "properties": {
+          "url": { "type": "string" },
+          "state": { "enum": ["open", "merged", "closed"] },
+          "workItems": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "findings": {
+      "type": "array",
+      "description": "Facts discovered during the work that later sessions must trust.",
+      "items": {
+        "type": "object",
+        "required": ["date", "summary"],
+        "properties": { "date": { "$ref": "#/$defs/date" }, "summary": { "type": "string" } }
+      }
+    },
+    "workItems": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "status", "log"],
+        "properties": {
+          "id": { "type": "string" },
+          "title": { "type": "string" },
+          "status": { "$ref": "#/$defs/status" },
+          "dependsOn": { "type": "array", "items": { "type": "string" } },
+          "acceptance": { "type": "array", "items": { "type": "string" } },
+          "log": { "type": "array", "items": { "$ref": "#/$defs/logEntry" } }
+        }
+      }
+    },
+    "changelog": { "type": "array", "items": { "$ref": "#/$defs/logEntry" } }
+  },
+  "$defs": {
+    "date": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+    "status": { "enum": ["not-started", "in-progress", "blocked", "completed"] },
+    "logEntry": {
+      "type": "object",
+      "required": ["date", "summary"],
+      "properties": {
+        "date": { "$ref": "#/$defs/date" },
+        "summary": { "type": "string" },
+        "commit": { "type": "string" }
+      }
+    }
+  }
+}

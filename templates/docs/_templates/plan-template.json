@@ -1,0 +1,32 @@
+{
+  "$schema": "https://raw.githubusercontent.com/<you>/ai-dev-playbook/main/schemas/plan-state.schema.json",
+  "planId": "feature-name",
+  "title": "#123: Feature title",
+  "issue": "#123",
+  "lifecycle": "multi-session",
+  "status": "not-started",
+  "createdDate": "2026-01-01",
+  "lastUpdated": "2026-01-01",
+  "relatedDocs": ["docs/feature-name-plan.md"],
+  "repositories": [],
+  "pullRequests": [],
+  "findings": [],
+  "workItems": [
+    {
+      "id": "phase-1",
+      "title": "Phase 1 — <scope>",
+      "status": "not-started",
+      "acceptance": ["<observable outcome>"],
+      "log": []
+    },
+    {
+      "id": "phase-2",
+      "title": "Phase 2 — <scope>",
+      "status": "not-started",
+      "dependsOn": ["phase-1"],
+      "acceptance": ["<observable outcome>"],
+      "log": []
+    }
+  ],
+  "changelog": [{ "date": "2026-01-01", "summary": "Plan created" }]
+}
